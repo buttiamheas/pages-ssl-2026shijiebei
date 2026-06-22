@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>世界杯信息聚合 · ssl--2026shijiebei.com</title>
+  <style>
+    /* reset & base */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #f5f7fa;
+      color: #1e2a3a;
+      line-height: 1.6;
+    }
+
+    /* 深色头图 */
+    .hero {
+      background: linear-gradient(145deg, #0b1a2e 0%, #142c44 100%);
+      color: #eef2f6;
+      padding: 4rem 2rem 3.2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; width: 100%; height: 4px;
+      background: #facc15;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 7vw, 3.8rem);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .hero h1 span {
+      color: #facc15;
+    }
+    .hero p {
+      max-width: 680px;
+      margin: 0.8rem auto 0;
+      font-size: 1.1rem;
+      opacity: 0.9;
+      font-weight: 300;
+    }
+
+    /* 内容容器 */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* 卡片网格 —— 信息卡片式布局 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.8rem;
+      margin-bottom: 3rem;
+    }
+    @media (min-width: 620px) {
+      .card-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 920px) {
+      .card-grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);
+      padding: 1.8rem 1.6rem 2rem;
+      transition: transform 0.15s ease, box-shadow 0.2s;
+      border: 1px solid #e9edf2;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(0, 20, 40, 0.08);
+    }
+    .card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #0a1828;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .card h3::before {
+      content: '🏆';
+      font-size: 1.2rem;
+      opacity: 0.8;
+    }
+    .card p {
+      color: #2c3e50;
+      font-size: 0.97rem;
+      margin-bottom: 0.4rem;
+    }
+    .card ul {
+      list-style: none;
+      margin-top: 0.8rem;
+    }
+    .card ul li {
+      padding: 0.25rem 0 0.25rem 1.3rem;
+      position: relative;
+      font-size: 0.93rem;
+      color: #1f3244;
+    }
+    .card ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: #facc15;
+      font-weight: 700;
+    }
+
+    /* 强调色链接 */
+    a {
+      color: #1a6b9e;
+      text-decoration: none;
+      font-weight: 500;
+      transition: border-bottom 0.1s;
+      border-bottom: 1px solid transparent;
+    }
+    a:hover {
+      border-bottom: 1px solid #1a6b9e;
+      color: #0f4b72;
+    }
+
+    /* 自然链接段落区域 */
+    .context-block {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 2rem 2.2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+      margin: 2.2rem 0 2.8rem;
+      border: 1px solid #e3e8ef;
+    }
+    .context-block p {
+      margin-bottom: 1rem;
+      font-size: 1.02rem;
+    }
+    .context-block p:last-child { margin-bottom: 0; }
+
+    .faq-mini {
+      margin-top: 2.5rem;
+      padding: 0.5rem 0;
+    }
+    .faq-mini h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: #0a1c30;
+    }
+    .faq-mini details {
+      border-bottom: 1px solid #dfe4ea;
+      padding: 0.8rem 0;
+    }
+    .faq-mini details summary {
+      font-weight: 500;
+      cursor: pointer;
+      color: #1f3a57;
+      padding: 0.2rem 0;
+      font-size: 0.98rem;
+    }
+    .faq-mini details p {
+      margin-top: 0.6rem;
+      color: #2c4056;
+      font-size: 0.94rem;
+      padding-left: 0.5rem;
+    }
+
+    /* 页脚 */
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem 2.5rem;
+      color: #586b7a;
+      font-size: 0.92rem;
+      border-top: 1px solid #dce2ea;
+      margin-top: 1rem;
+    }
+    footer a { color: #1f3a57; border-bottom: none; }
+    footer a:hover { border-bottom: 1px solid; }
+
+    /* 辅助 */
+    .badge-tag {
+      display: inline-block;
+      background: #eef3f9;
+      padding: 0.1rem 1rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      color: #1d4c6e;
+      margin-top: 0.6rem;
+    }
+    hr {
+      border: 0;
+      height: 1px;
+      background: #d6dee8;
+      margin: 1.6rem 0;
+    }
+  </style>
+</head>
+<body>
+
+<header class="hero">
+  <h1><span>⚽</span> 赛程·资讯·深度</h1>
+  <p>快速了解 <strong>ssl--2026shijiebei.com</strong> 的核心用途与内容结构，判断是否符合你的信息需求。</p>
+</header>
+
+<main class="container">
+  <!-- 主用途信息卡片 -->
+  <section class="card-grid">
+    <div class="card">
+      <h3>核心用途</h3>
+      <p>聚焦 <a href="https://ssl--2026shijiebei.com">世界杯</a> 赛程、分组、数据与实时新闻，整合多平台动态。适合希望一站式跟进比赛节奏的用户。</p>
+      <ul>
+        <li>2026 完整赛历 &amp; 场馆</li>
+        <li>国家队阵容 &amp; 积分变化</li>
+        <li>关键比赛回放索引</li>
+      </ul>
+      <div class="badge-tag">数据更新频率：每日</div>
+    </div>
+
+    <div class="card">
+      <h3>适合人群</h3>
+      <p>从资深球迷到泛体育观众均可使用。以下人群尤其适合：</p>
+      <ul>
+        <li>需要快速查赛程的上班族</li>
+        <li>关注多支国家队的中立球迷</li>
+        <li>对历史数据与趋势感兴趣的研究者</li>
+        <li>海外华人、时差党</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>场景举例</h3>
+      <p>比赛日当天打开网站确认开球时间；赛前浏览对手交手记录；赛后查阅最佳射手榜。所有信息均围绕 <a href="https://ssl--2026shijiebei.com">世界杯</a> 展开。</p>
+      <ul>
+        <li>通勤时快速浏览当日赛程</li>
+        <li>和朋友讨论时核对数据</li>
+        <li>写前瞻文章时引用统计</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 自然链接段落 + 进一步解释 -->
+  <div class="context-block">
+    <p><strong>为什么关注这个站点？</strong> 与其他资讯页不同，ssl--2026shijiebei.com 更侧重赛事本身的逻辑——你不需要在海量新闻中筛选赛程。每一场小组赛、淘汰赛都配有对应的时间线与队伍数据。对于只想看 <a href="https://ssl--2026shijiebei.com">世界杯</a> 基础结构的人，首页直接用卡片呈现了预选赛进度、已确定席位、抽签规则等关键节点。</p>
+    <p>如果你习惯赛前做功课，可以快速翻阅近期热身赛结果；如果你是结果党，直接查看积分榜和晋级图。页面不嵌入无关广告，信息密度较高，适合纯粹的内容获取场景。</p>
+  </div>
+
+  <!-- FAQ摘要 + 提示 -->
+  <div class="faq-mini">
+    <h4>🤔 常见快速判断</h4>
+    <details>
+      <summary>2026 世界杯在哪几个国家举办？</summary>
+      <p>由美国、加拿大、墨西哥联合主办，将是首次由三个国家共同承办的世界杯。具体城市和球场列表可在 ssl--2026shijiebei.com 的「场馆」分区查看。</p>
+    </details>
+    <details>
+      <summary>网站有没有深度战术分析或长文？</summary>
+      <p>以数据、赛程、简讯为主，不侧重长篇战术专栏。适合需要“快查快用”的用户，深度评论建议搭配其他媒体。不过站内会整理每轮最佳进球集锦与赛后数据表。</p>
+    </details>
+    <details>
+      <summary>信息源可靠吗？会包含未证实的传闻吗？</summary>
+      <p>主要引用官方赛历、FIFA 公告以及主流通讯社的赛果。不收录转会谣言或未经确认的场外消息，专注比赛本身内容。</p>
+    </details>
+    <hr>
+    <p style="color:#314e6b; font-size:0.95rem;">💡 提示：如果你只是为了确认下一场焦点战的时间，或者想快速了解小组抽签分档，直接前往 <a href="https://ssl--2026shijiebei.com">世界杯</a> 首页，从顶部导航进入对应模块即可。</p>
+  </div>
+</main>
+
+<footer>
+  <p>基于公开赛历整理 · 信息仅供参考 · 详细规则以官方发布为准</p>
+  <p style="margin-top:0.3rem;">© <a href="https://ssl--2026shijiebei.com">世界杯</a> 信息索引页</p>
+</footer>
+
+</body>
+</html>
